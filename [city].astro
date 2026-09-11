@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCities, getRetreatsbyCity } from '../../lib/data.js';
+
+export async function getStaticPaths() {
+  const cities = getCities();
+  return cities.map(city => ({
+    params: { city: city.slug },
+    props: { city }
+  }));
+}
+
+const { city } = Astro.props;
+const retreats = getRetreatsbyCity(city.slug);
+const title = `Spiritual Retreats in ${city.name}, ${city.state}`;
+const description = `Discover ${retreats.length} spiritual retreat centers and meditation facilities in ${city.name}, Arizona.`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <h1>{title}</h1>
+    <p class="sr-subtitle">{retreats.length} listings in {city.name}</p>
+
+    <div class="sr-listings">
+      {retreats.map(retreat => (
+        <article class="sr-listing">
+          <h2><a href={`/p/${retreat.slug}/`}>{retreat.name}</a></h2>
+          <p class="sr-listing__meta">
+            {retreat.category}
+            {retreat.rating && <span class="sr-rating">⭐ {retreat.rating.toFixed(1)}</span>}
+          </p>
+          <p>{retreat.address}</p>
+          {retreat.phone && <p><a href={`tel:${retreat.phone}`}>{retreat.phone}</a></p>}
+          <p><a href={`/p/${retreat.slug}/`}>View Details →</a></p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <style>
+    .sr-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .sr-listings {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .sr-listing {
+      padding: 1.5rem;
+      background-color: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+    }
+
+    .sr-listing h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.35rem;
+    }
+
+    .sr-listing h2 a {
+      color: inherit;
+    }
+
+    .sr-listing__meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .sr-rating {
+      background-color: var(--accent-warm);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+    }
+
+    .sr-listing p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</Base>

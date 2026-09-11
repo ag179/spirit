@@ -1,0 +1,181 @@
+---
+import { SITE_CONFIG, COLORS, TYPOGRAPHY } from '../config.mjs';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = `${title} | ${SITE_CONFIG.name}`;
+---
+
+<!DOCTYPE html>
+<html lang={SITE_CONFIG.lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={COLORS['--accent-primary']} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={`https://fonts.googleapis.com/css2?family=${TYPOGRAPHY.display}:wght@400;600;700&family=${TYPOGRAPHY.body}:wght@400;500;600&display=swap`} rel="stylesheet" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={`${SITE_CONFIG.url}${Astro.url.pathname}`} />
+
+    <style define:vars={COLORS}>
+      :root {
+        --font-display: '${TYPOGRAPHY.display}', serif;
+        --font-body: '${TYPOGRAPHY.body}', sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        background-color: var(--surface-primary);
+        line-height: 1.6;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+      h2 { font-size: 2rem; margin-bottom: 0.875rem; }
+      h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+
+      a {
+        color: var(--accent-primary);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      a:hover {
+        color: var(--accent-secondary);
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--accent-primary);
+        color: var(--surface-primary);
+        border-radius: 0.25rem;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--accent-secondary);
+      }
+
+      .sr-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .sr-grid {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      @media (min-width: 768px) {
+        .sr-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sr-header">
+      <div class="sr-container">
+        <nav class="sr-nav">
+          <a href="/" class="sr-logo">
+            <strong>{SITE_CONFIG.name}</strong>
+          </a>
+          <div class="sr-nav__links">
+            <a href="/in/phoenix/">Cities</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+            <a href="/pricing/">Advertise</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="sr-main">
+      <slot />
+    </main>
+
+    <footer class="sr-footer">
+      <div class="sr-container">
+        <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}</p>
+        <p><small>Data from {SITE_CONFIG.dataSource} • Last updated: {SITE_CONFIG.lastUpdated}</small></p>
+        <p><small><a href="/privacy/">Privacy</a> • <a href="/about/">About</a></small></p>
+      </div>
+    </footer>
+
+    <style>
+      .sr-header {
+        background-color: var(--surface-secondary);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+      }
+
+      .sr-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .sr-logo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary) !important;
+      }
+
+      .sr-nav__links {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .sr-main {
+        min-height: 60vh;
+        padding: 2rem 0;
+      }
+
+      .sr-footer {
+        margin-top: 4rem;
+        padding: 2rem 0;
+        background-color: var(--surface-secondary);
+        border-top: 1px solid var(--border);
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+
+      .sr-footer p {
+        margin-bottom: 0.5rem;
+      }
+
+      .sr-footer a {
+        color: var(--accent-primary);
+      }
+    </style>
+  </body>
+</html>

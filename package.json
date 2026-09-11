@@ -1,0 +1,16 @@
+{
+  "name": "arizona-spiritual-retreats",
+  "version": "1.0.0",
+  "description": "Directory of Arizona spiritual retreats, meditation centers, and wellness facilities",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/validate.mjs",
+    "validate": "node scripts/validate.mjs",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "astro": "^4.0.0",
+    "@astrojs/sitemap": "^3.0.0"
+  }
+}

@@ -1,0 +1,227 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getAllRetreats, getRetreat } from '../../lib/data.js';
+
+export async function getStaticPaths() {
+  const retreats = getAllRetreats();
+  return retreats.map(retreat => ({
+    params: { retreat: retreat.slug },
+    props: { retreat }
+  }));
+}
+
+const { retreat } = Astro.props;
+const title = retreat.name;
+const description = `${retreat.name} in ${retreat.city}, Arizona. ${retreat.category}. Rating: ${retreat.rating}/5`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <div class="sr-breadcrumb">
+      <a href="/">Home</a> / <a href={`/in/${retreat.citySlug}/`}>{retreat.city}</a> / <span>{retreat.name}</span>
+    </div>
+
+    <div class="sr-profile">
+      <div class="sr-profile__main">
+        <h1>{retreat.name}</h1>
+
+        <div class="sr-profile__meta">
+          <div class="sr-rating-block">
+            <div class="sr-rating-stars">
+              {'⭐'.repeat(Math.round(retreat.rating || 0))}
+            </div>
+            <p>{retreat.rating?.toFixed(1)} stars • {retreat.reviews} reviews</p>
+          </div>
+
+          <p class="sr-category">{retreat.category}</p>
+          {retreat.type && <p class="sr-type">{retreat.type}</p>}
+        </div>
+
+        <section class="sr-section">
+          <h2>About</h2>
+          <p>{retreat.description || `Spiritual retreat center located in ${retreat.city}, Arizona.`}</p>
+        </section>
+
+        <section class="sr-section">
+          <h2>Location</h2>
+          <p>{retreat.address}</p>
+          {retreat.postalCode && <p>{retreat.city}, Arizona {retreat.postalCode}</p>}
+        </section>
+
+        {retreat.hours && (
+          <section class="sr-section">
+            <h2>Hours</h2>
+            <p>{retreat.hours}</p>
+          </section>
+        )}
+
+        {retreat.subtypes && (
+          <section class="sr-section">
+            <h2>Services</h2>
+            <p>{retreat.subtypes}</p>
+          </section>
+        )}
+      </div>
+
+      <aside class="sr-profile__sidebar">
+        <div class="sr-contact-card">
+          <h3>Contact</h3>
+          {retreat.phone && (
+            <a href={`tel:${retreat.phone}`} class="sr-contact-link">
+              📞 {retreat.phone}
+            </a>
+          )}
+          {retreat.website && (
+            <a href={retreat.website} target="_blank" rel="noopener noreferrer" class="sr-contact-link">
+              🌐 Visit Website
+            </a>
+          )}
+          <a href={`/claim/?listing=${retreat.slug}`} class="sr-claim-btn">
+            Claim This Listing
+          </a>
+        </div>
+
+        <div class="sr-featured-cta">
+          <h3>Get Featured</h3>
+          <p>Stand out at the top of your city page.</p>
+          <a href="/pricing/">Learn More</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <style>
+    .sr-breadcrumb {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .sr-breadcrumb a {
+      color: var(--accent-primary);
+    }
+
+    .sr-profile {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .sr-profile {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sr-profile__main h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .sr-profile__meta {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sr-rating-block {
+      margin-bottom: 1rem;
+    }
+
+    .sr-rating-stars {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sr-rating-block p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .sr-category {
+      font-weight: 600;
+      color: var(--accent-primary);
+      font-size: 0.95rem;
+    }
+
+    .sr-type {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .sr-section {
+      margin-bottom: 2rem;
+    }
+
+    .sr-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+    }
+
+    .sr-section p {
+      line-height: 1.7;
+    }
+
+    /* Sidebar */
+    .sr-profile__sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sr-contact-card,
+    .sr-featured-cta {
+      padding: 1.5rem;
+      background-color: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+    }
+
+    .sr-contact-card h3,
+    .sr-featured-cta h3 {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .sr-contact-link {
+      display: block;
+      padding: 0.75rem 0;
+      color: var(--accent-primary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sr-contact-link:last-of-type {
+      border-bottom: none;
+    }
+
+    .sr-claim-btn {
+      display: block;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      text-align: center;
+      background-color: var(--accent-warm);
+      color: white;
+      font-weight: 600;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s;
+    }
+
+    .sr-claim-btn:hover {
+      background-color: #b86a35;
+    }
+
+    .sr-featured-cta p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .sr-featured-cta a {
+      font-weight: 600;
+      color: var(--accent-warm);
+    }
+  </style>
+</Base>
