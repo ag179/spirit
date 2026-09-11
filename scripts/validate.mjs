@@ -1,6 +1,7 @@
-import { readdirSync, readFileSync, existsSync } from 'fs';
+import { readdirSync, readFileSync, existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
+const SITE_URL = 'https://arizonaspiritualretreats.local';
 const distDir = join(process.cwd(), 'dist');
 let errors = [];
 let warnings = [];
@@ -96,11 +97,25 @@ for (const file of htmlFiles) {
   }
 }
 
-// Check sitemap exists
-const sitemapPath = join(distDir, 'sitemap-index.xml');
-if (!existsSync(sitemapPath)) {
-  warnings.push('Missing sitemap-index.xml in dist/');
-}
+// Generate sitemap from built HTML files
+const urls = htmlFiles.map(file => {
+  let urlPath = file.replace(distDir, '').replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+  if (urlPath === '/index') urlPath = '/';
+  return `<url><loc>${SITE_URL}${urlPath}</loc></url>`;
+});
+
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+
+writeFileSync(join(distDir, 'sitemap.xml'), sitemapXml);
+writeFileSync(join(distDir, 'sitemap-index.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<sitemap><loc>${SITE_URL}/sitemap.xml</loc></sitemap>
+</sitemapindex>`);
+
+console.log(`📄 sitemap.xml created with ${urls.length} URLs`);
 
 // Report
 if (warnings.length > 0) {
