@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getServices, getAllRetreats } from '../../lib/data.js';
+
+export async function getStaticPaths() {
+  const services = getServices();
+  return services.map(service => ({
+    params: { service: service.slug },
+    props: { service }
+  }));
+}
+
+const { service } = Astro.props;
+const allRetreats = getAllRetreats();
+const retreats = allRetreats.filter(r => {
+  const cats = (r.subtypes || '').split(',').map(s => s.trim().toLowerCase().replace(/\s+/g, '-'));
+  return cats.includes(service.slug);
+});
+
+const serviceName = service.name;
+const title = `${serviceName} Retreats in Arizona`;
+const description = `Find ${retreats.length} Arizona retreats and centers offering ${serviceName.toLowerCase()}. Browse our curated directory.`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <div class="sr-breadcrumb">
+      <a href="/">Home</a> / <span>{serviceName}</span>
+    </div>
+
+    <h1>{title}</h1>
+    <p class="sr-subtitle">{retreats.length} retreat{retreats.length !== 1 ? 's' : ''} offering {serviceName.toLowerCase()} across Arizona</p>
+
+    <div class="sr-listings">
+      {retreats.map(retreat => (
+        <article class="sr-listing">
+          <h2><a href={`/p/${retreat.slug}/`}>{retreat.name}</a></h2>
+          <p class="sr-listing__meta">
+            <a href={`/in/${retreat.citySlug}/`}>{retreat.city}</a>
+            {retreat.rating && <span class="sr-rating">⭐ {retreat.rating.toFixed(1)}</span>}
+          </p>
+          <p>{retreat.address}</p>
+          {retreat.phone && <p><a href={`tel:${retreat.phone}`}>{retreat.phone}</a></p>}
+          <p><a href={`/p/${retreat.slug}/`}>View Details →</a></p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <style>
+    .sr-breadcrumb {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .sr-breadcrumb a {
+      color: var(--accent-primary);
+    }
+
+    .sr-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .sr-listings {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .sr-listing {
+      padding: 1.5rem;
+      background-color: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .sr-listing:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 4px 12px rgba(45, 95, 79, 0.08);
+    }
+
+    .sr-listing h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.35rem;
+    }
+
+    .sr-listing h2 a {
+      color: inherit;
+    }
+
+    .sr-listing__meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .sr-rating {
+      background-color: var(--accent-warm);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+    }
+
+    .sr-listing p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</Base>

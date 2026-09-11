@@ -1,0 +1,162 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../config.mjs';
+
+const title = 'Contact Us';
+const description = `Get in touch with ${SITE_CONFIG.name}. Questions about listings, featured placement, or data removal requests.`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <div class="sr-contact-wrap">
+      <div class="sr-contact-info">
+        <h1>Contact Us</h1>
+        <p class="sr-contact-lead">
+          Questions about a listing, interested in featured placement, or need to request
+          a data removal? Send us a message and we'll respond within 48 hours.
+        </p>
+
+        <div class="sr-contact-detail">
+          <h3>Email</h3>
+          <a href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a>
+        </div>
+
+        <div class="sr-contact-detail">
+          <h3>Phone</h3>
+          <a href={`tel:${SITE_CONFIG.phone}`}>{SITE_CONFIG.phone}</a>
+        </div>
+
+        <div class="sr-contact-detail">
+          <h3>Response Time</h3>
+          <p>We respond to all inquiries within 48 hours.</p>
+        </div>
+      </div>
+
+      <form class="sr-contact-form" method="POST" action={`mailto:${SITE_CONFIG.email}`} enctype="text/plain">
+        <h2>Send a Message</h2>
+
+        <div class="sr-form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your name" />
+        </div>
+
+        <div class="sr-form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com" />
+        </div>
+
+        <div class="sr-form-group">
+          <label for="subject">Subject</label>
+          <select id="subject" name="subject">
+            <option value="general">General Question</option>
+            <option value="featured">Featured Placement Inquiry</option>
+            <option value="claim">Claim a Listing</option>
+            <option value="removal">Data Removal Request</option>
+            <option value="correction">Listing Correction</option>
+          </select>
+        </div>
+
+        <div class="sr-form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help..."></textarea>
+        </div>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .sr-contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 3rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .sr-contact-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sr-contact-lead {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .sr-contact-detail {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sr-contact-detail h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+
+    .sr-contact-detail a {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .sr-contact-detail p {
+      color: var(--text-secondary);
+    }
+
+    .sr-contact-form {
+      padding: 2rem;
+      background-color: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+    }
+
+    .sr-contact-form h2 {
+      margin-bottom: 1.5rem;
+      color: var(--accent-primary);
+    }
+
+    .sr-form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .sr-form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .sr-form-group input,
+    .sr-form-group select,
+    .sr-form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      background-color: var(--surface-primary);
+      transition: border-color 0.2s;
+    }
+
+    .sr-form-group input:focus,
+    .sr-form-group select:focus,
+    .sr-form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+    }
+
+    .sr-contact-form button {
+      width: 100%;
+      padding: 0.875rem;
+      font-size: 1rem;
+    }
+  </style>
+</Base>

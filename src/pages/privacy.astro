@@ -1,0 +1,147 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../config.mjs';
+
+const title = 'Privacy & Data Policy';
+const description = `Privacy policy and data practices for ${SITE_CONFIG.name}, including data sources, removal requests, and how we handle your information.`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <div class="sr-privacy-wrap">
+      <h1>Privacy & Data Policy</h1>
+      <p class="sr-updated">Last updated: {SITE_CONFIG.lastUpdated}</p>
+
+      <section class="sr-section">
+        <h2>Data We Collect</h2>
+        <p>
+          This directory publishes publicly available business information sourced from
+          {SITE_CONFIG.dataSource}. This includes business names, addresses, phone numbers,
+          websites, operating hours, categories, and aggregate rating data from public
+          review platforms.
+        </p>
+        <p>
+          We do not collect personal information from visitors unless you voluntarily
+          contact us through our contact form. Any information you submit through that
+          form is used solely to respond to your inquiry.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>How We Use Your Data</h2>
+        <p>Business listing data is used to:</p>
+        <ul>
+          <li>Display retreat information in our directory</li>
+          <li>Sort listings using our Bayesian ranking methodology</li>
+          <li>Provide city and service category browsing</li>
+          <li>Generate sitemaps for search engine indexing</li>
+        </ul>
+        <p>
+          We do not sell, rent, or share business data with third parties for marketing
+          purposes. Contact form submissions are used only to respond to your request.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Data Removal Requests</h2>
+        <p>
+          If you are a business owner or authorized representative and would like your
+          listing removed from this directory, we honor removal requests within
+          <strong>48 hours</strong>. To request removal:
+        </p>
+        <ol>
+          <li>Visit our <a href="/contact/">contact page</a></li>
+          <li>Select "Data Removal Request" as the subject</li>
+          <li>Include the business name and city in your message</li>
+        </ol>
+        <p>
+          We verify ownership by checking the email domain against the business's listed
+          website. Removal requests from free email providers (Gmail, Yahoo, etc.) may
+          require additional verification.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Cookies & Tracking</h2>
+        <p>
+          This site does not set tracking cookies. We do not use analytics services that
+          collect personally identifiable information. Any server logs are standard
+          hosting logs used only for site security and uptime monitoring.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Third-Party Links</h2>
+        <p>
+          Listing profiles may link to external business websites. We are not responsible
+          for the privacy practices or content of external sites. We recommend reviewing
+          the privacy policy of any website you visit.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Featured Placement Disclosure</h2>
+        <p>
+          Some listings may be marked as "Featured" when a business pays for premium
+          placement. Featured listings are always clearly labeled. Paid placement does
+          not affect displayed ratings or review counts, which reflect public data
+          without modification.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Changes to This Policy</h2>
+        <p>
+          We may update this policy from time to time. The "Last updated" date at the top
+          of this page reflects the most recent revision. Continued use of this site after
+          changes constitutes acceptance of the updated policy.
+        </p>
+      </section>
+
+      <section class="sr-section">
+        <h2>Contact</h2>
+        <p>
+          Questions about this privacy policy? <a href="/contact/">Contact us</a> and
+          we'll respond within 48 hours.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <style>
+    .sr-privacy-wrap {
+      max-width: 750px;
+    }
+
+    .sr-updated {
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .sr-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .sr-section h2 {
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .sr-section p {
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .sr-section ul,
+    .sr-section ol {
+      margin: 1rem 0 1rem 1.5rem;
+      line-height: 1.8;
+    }
+
+    .sr-section li {
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</Base>

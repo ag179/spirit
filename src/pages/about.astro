@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../config.mjs';
+import { getAllRetreats, getCities } from '../lib/data.js';
+
+const retreats = getAllRetreats();
+const cities = getCities();
+const title = 'About This Directory';
+const description = `Learn about ${SITE_CONFIG.name}, our data sources, ranking methodology, and how we curate retreat listings across Arizona.`;
+---
+
+<Base title={title} description={description}>
+  <div class="sr-container">
+    <h1>About {SITE_CONFIG.name}</h1>
+    <p class="sr-lead">{SITE_CONFIG.tagline}</p>
+
+    <section class="sr-section">
+      <h2>What This Directory Covers</h2>
+      <p>
+        {SITE_CONFIG.name} lists {retreats.length} spiritual retreat centers, meditation facilities,
+        and wellness organizations across {cities.length} Arizona cities. Each listing includes
+        publicly available business information such as address, phone, website, hours, and ratings.
+      </p>
+      <p>
+        We focus on places whose primary purpose involves spiritual practice, meditation, retreats,
+        or contemplative programming. Generic spas, vacation rentals, and unrelated businesses
+        are excluded during our classification process.
+      </p>
+    </section>
+
+    <section class="sr-section">
+      <h2>Data Source & Freshness</h2>
+      <p>
+        {SITE_CONFIG.dataSource}. We deduplicate listings by phone and address, keeping the
+        higher-reviewed version when duplicates are found. Data is updated manually and
+        reflects business information as of the date shown in the footer.
+      </p>
+    </section>
+
+    <section class="sr-section">
+      <h2>Ranking Methodology</h2>
+      <p>
+        Listings are sorted using a <strong>Bayesian average</strong> rather than raw star ratings.
+        This prevents a retreat with a single 5-star review from outranking one with hundreds
+        of 4.9-star reviews. The formula blends each listing's rating with the dataset average,
+        weighted by review count:
+      </p>
+      <p class="sr-formula">
+        score = (PRIOR &times; datasetMean + n &times; rating) / (PRIOR + n)
+      </p>
+      <p>
+        The displayed star rating is always the unmodified original. The Bayesian score is used
+        only for sort order. Featured listings are pinned to the top of their city page and
+        clearly labeled.
+      </p>
+    </section>
+
+    <section class="sr-section">
+      <h2>Exclusion Criteria</h2>
+      <p>
+        We classify each potential listing as <strong>core</strong> (retreat-focused),
+        <strong>adjacent</strong> (spiritually related), or <strong>excluded</strong>
+        (generic categories like vacation rentals or standard spas). Only core and adjacent
+        listings appear in the directory.
+      </p>
+    </section>
+
+    <section class="sr-section sr-disclaimer">
+      <h2>{SITE_CONFIG.name.includes('Spiritual') ? 'Important Notice' : 'Disclaimer'}</h2>
+      <p>
+        Nothing on this site constitutes professional spiritual advice, medical advice, or an
+        endorsement. Listings reflect business information from public sources; inclusion does
+        not verify credentials, licensing, or legitimacy. Always verify business details directly
+        and consult appropriate professionals for health or legal matters.
+      </p>
+    </section>
+  </div>
+
+  <style>
+    .sr-lead {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+    }
+
+    .sr-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .sr-section h2 {
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    .sr-section p {
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      max-width: 700px;
+    }
+
+    .sr-formula {
+      background-color: var(--surface-secondary);
+      padding: 1rem 1.5rem;
+      border-radius: 0.375rem;
+      font-family: monospace;
+      font-size: 0.95rem;
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    .sr-disclaimer {
+      padding: 1.5rem;
+      background-color: var(--surface-secondary);
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .sr-disclaimer h2 {
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</Base>
