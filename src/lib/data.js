@@ -1,4 +1,4 @@
-import retreatData from '../data/retreats.json' assert { type: 'json' };
+import retreatData from '../data/retreats.json\' assert { type: 'json' };
 import { PLACEMENTS } from '../config.mjs';
 
 // Bayesian ranking to avoid outliers
